@@ -32,17 +32,17 @@ $(document).ready(function(){
         })
     })
 
-    $(document).on("click", ".delete", function(){
-        var articleid = $("#addcomment").attr("data-id")
-        var id = $(this).parent().attr("id")
-        $.ajax({ 
-            url: "/delete/" + id + "/" + articleid,
-            type: "DELETE",
-            success: function(result){
-                console.log(articleid)
-            }
-        })
-    });
+    // $(document).on("click", ".delete", function(){
+    //     var articleid = $("#addcomment").attr("data-id")
+    //     var id = $(this).parent().attr("id")
+    //     $.ajax({ 
+    //         url: "/delete/" + id + "/" + articleid,
+    //         type: "DELETE",
+    //         success: function(result){
+    //             console.log(articleid)
+    //         }
+    //     })
+    // });
 
 });
 
@@ -56,7 +56,7 @@ function printComments(id){
             $("#comments").empty()
             $("#comments").html(`<h3>Number of comments: ${comments.length}<h3>`)
             for (var x = 0; x < comments.length; x++){
-                $("#comments").append(`<p class="comment" id="${data[0]._id}">${comments[x].comment}<button class="delete">Delete</button></p>`)
+                $("#comments").append(`<p class="comment" id="${data[0]._id}">${comments[x].comment}</p>`)
             }
           
         $("#commentbox").append("<textarea id='bodyinput' name='body'></textarea>");

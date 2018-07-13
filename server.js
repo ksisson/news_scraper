@@ -84,15 +84,15 @@ app.get("/articles", function(req, res) {
       })
   })
 
-  app.delete("/delete/:id/:articleid", function(req, res){
-      db.Comments.remove({_id: req.params.id})
-      .then(function(dbComment){
-          return db.Article.findOneAndUpdate({_id: req.params.articleid}, {$pull : {comments: req.params.id}})
-      })
-      .then(function(dbArticle){
-          res.json(dbArticle)
-      })
-  })
+//   app.delete("/delete/:id/:articleid", function(req, res){
+//       db.Comments.remove({_id: req.params.id})
+//       .then(function(dbComment){
+//           return db.Article.findOneAndUpdate({_id: req.params.articleid}, {$pull : {comments: req.params.id}})
+//       })
+//       .then(function(dbArticle){
+//           res.json(dbArticle)
+//       })
+//   })
 
 
 
