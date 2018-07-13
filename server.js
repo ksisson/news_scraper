@@ -11,7 +11,7 @@ var cheerio = require("cheerio");
 // Require all models
 var db = require("./models");
 
-var PORT = 3000;
+var PORT = process.env.PORT||3000;
 
 // Initialize Express
 var app = express();
@@ -23,8 +23,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Use express.static to serve the public folder as a static directory
 app.use(express.static("public"));
 
+
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/news_scraper";
+
+// Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/news_scraper");
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI);
+
 
 app.get("/scrape", function(req,res){
     axios.get("https://www.theverge.com/tech").then(function(response){
@@ -72,6 +78,16 @@ app.get("/articles", function(req, res) {
       db.Comments.create({comment: req.body.comment})
       .then(function(dbComment){
           return db.Article.findOneAndUpdate({_id: req.body.id}, {$push: {comments: dbComment._id}}, {new: true})
+      })
+      .then(function(dbArticle){
+          res.json(dbArticle)
+      })
+  })
+
+  app.delete("/delete/:id/:articleid", function(req, res){
+      db.Comments.remove({_id: req.params.id})
+      .then(function(dbComment){
+          return db.Article.findOneAndUpdate({_id: req.params.articleid}, {$pull : {comments: req.params.id}})
       })
       .then(function(dbArticle){
           res.json(dbArticle)

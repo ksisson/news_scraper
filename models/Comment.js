@@ -5,7 +5,12 @@ var Schema = mongoose.Schema;
 
 var CommentSchema = new Schema({
 
-  comment: String
+  comment: String,
+
+  createdAt: {
+    type: Date,
+    default: Date.now()
+  }
 
 });
 
